@@ -4,20 +4,16 @@
     resource_group_webapp: myResourceGroupWebapp
     resource_group: myResourceGroup
     webapp_name: myLinuxWebApp
-    plan_name: myAppServicePlan
     location: eastus
-    traffic_manager_profile_name: myTrafficManagerProfile
-    traffic_manager_endpoint_name: myTrafficManagerEndpoint
+    mysqlserver_name: mysqlServerName
+    mysqldb_name: mysqlDbName
+    admin_username: mysqlAdmin
+    admin_password: mysqlAdminSecret
 
   tasks:
   - name: Create resource group
     azure_rm_resourcegroup:
         name: "{{ resource_group_webapp }}"
-        location: "{{ location }}"
-
-  - name: Create secondary resource group
-    azure_rm_resourcegroup:
-        name: "{{ resource_group }}"
         location: "{{ location }}"
 
   - name: Create App Service on Linux with Java Runtime
