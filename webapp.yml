@@ -1,0 +1,42 @@
+- hosts: localhost
+  connection: local
+  vars:
+    resource_group_webapp: myResourceGroupWebapp
+    resource_group: myResourceGroup
+    webapp_name: myLinuxWebApp
+    plan_name: myAppServicePlan
+    location: eastus
+    traffic_manager_profile_name: myTrafficManagerProfile
+    traffic_manager_endpoint_name: myTrafficManagerEndpoint
+
+  tasks:
+  - name: Create resource group
+    azure_rm_resourcegroup:
+        name: "{{ resource_group_webapp }}"
+        location: "{{ location }}"
+
+  - name: Create secondary resource group
+    azure_rm_resourcegroup:
+        name: "{{ resource_group }}"
+        location: "{{ location }}"
+
+  - name: Create App Service on Linux with Java Runtime
+    azure_rm_webapp:
+        resource_group: "{{ resource_group_webapp }}"
+        name: "{{ webapp_name }}"
+        plan:
+          resource_group: "{{ resource_group }}"
+          name: "{{ plan_name }}"
+          is_linux: true
+          sku: S1
+          number_of_workers: 1
+        app_settings:
+          testkey: "testvalue"
+        frameworks:
+          - name: java
+            version: 8
+            settings:
+              java_container: "Tomcat"
+              java_container_version: "8.5"
+
+ 
